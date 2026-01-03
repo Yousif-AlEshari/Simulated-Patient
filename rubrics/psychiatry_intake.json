@@ -1,0 +1,150 @@
+{
+  "rubric_id": "psychiatry_intake_v2",
+  "version": "1.0.1",
+  "languages": [
+    "English",
+    "Arabic"
+  ],
+  "patient_cues": {
+    "risk_positive": {
+      "patterns_en": [
+        "\\\\b(suicid|kill myself|end my life|self[- ]harm|hurt myself)\\\\b"
+      ],
+      "patterns_ar": [
+        "(انتحار|اقتل نفسي|انهي حياتي|ايذاء النفس|اؤذي نفسي)"
+      ]
+    }
+  },
+  "items": [
+    {
+      "id": "intro_agenda",
+      "desc": "Sets role/agenda (intro + purpose).",
+      "weight": 2.0,
+      "patterns_en": [
+        "\\\\b(i am|i'm)\\\\b.*\\\\b(doctor|psychiatrist|clinician)\\\\b",
+        "\\\\b(today|i'd like to|i want to)\\\\b.*\\\\b(ask|talk|understand)\\\\b"
+      ],
+      "patterns_ar": [
+        "انا.*(طبيب|طبيبه|طبيب نفسي)",
+        "(اليوم|حاب|اريد).*(اسال|نتحدث|افهم)"
+      ]
+    },
+    {
+      "id": "open_ended",
+      "desc": "Starts with an open question.",
+      "weight": 2.0,
+      "patterns_en": [
+        "\\\\b(tell me about|what brings you|what's been going on)\\\\b"
+      ],
+      "patterns_ar": [
+        "(احكي لي|ايش جابك|شو صاير معك|ماذا يحدث)"
+      ]
+    },
+    {
+      "id": "timeline_impairment",
+      "desc": "Asks duration/timeline and functional impact.",
+      "weight": 3.0,
+      "patterns_en": [
+        "\\\\b(how long|since when|when did this start)\\\\b",
+        "\\\\b(affect|impact)\\\\b.*\\\\b(work|school|sleep|daily)\\\\b"
+      ],
+      "patterns_ar": [
+        "(من متى|صار لك).*",
+        "(اثر|ياثر).*(شغل|دراسه|نوم|حياتك)"
+      ]
+    },
+    {
+      "id": "past_tx",
+      "desc": "Past psych history + treatment/meds/therapy.",
+      "weight": 2.0,
+      "patterns_en": [
+        "\\\\b(before|previously)\\\\b.*\\\\b(depression|anxiety|therapy|medication|antidepressant)\\\\b",
+        "\\\\b(are you on|have you taken)\\\\b.*\\\\b(meds|medication)\\\\b"
+      ],
+      "patterns_ar": [
+        "(سابقا|قبل).*(علاج|ادويه|دواء|جلسات)",
+        "(هل تاخذ|هل اخذت).*(دواء|ادويه)"
+      ]
+    },
+    {
+      "id": "substance",
+      "desc": "Asks about alcohol/drugs/substance use.",
+      "weight": 2.0,
+      "patterns_en": [
+        "\\\\b(alcohol|drugs|substance|weed|cannabis)\\\\b"
+      ],
+      "patterns_ar": [
+        "(كحول|مخدرات|حشيش|مواد)"
+      ]
+    },
+    {
+      "id": "empathy_validation",
+      "desc": "Empathy/validation statement.",
+      "weight": 2.0,
+      "patterns_en": [
+        "\\\\b(that sounds|i'm sorry|thank you for sharing|that must be)\\\\b"
+      ],
+      "patterns_ar": [
+        "(هذا صعب|اسف|شكرا لمشاركتك|لازم يكون صعب)"
+      ]
+    },
+    {
+      "id": "risk_screen",
+      "desc": "Screens for self-harm/suicidal ideation.",
+      "weight": 4.0,
+      "patterns_en": [
+        "\\\\b(suicid|self[- ]harm|hurt yourself|end your life|kill yourself)\\\\b"
+      ],
+      "patterns_ar": [
+        "(انتحار|ايذاء النفس|تؤذي نفسك|تنهي حياتك)"
+      ]
+    },
+    {
+      "id": "risk_depth",
+      "desc": "If risk present, asks plan/intent/means/access.",
+      "weight": 5.0,
+      "gate": "patient_risk_positive",
+      "safety_critical": true,
+      "patterns_en": [
+        "\\\\b(plan|intent|means|how would you|access to)\\\\b"
+      ],
+      "patterns_ar": [
+        "(خطه|نيه|وسيله|كيف.*راح|امكانيه الوصول)"
+      ]
+    },
+    {
+      "id": "summary_next_steps",
+      "desc": "Summarizes + proposes next steps/safety plan/referral.",
+      "weight": 3.0,
+      "patterns_en": [
+        "\\\\b(let me summarize|to summarize|what i hear)\\\\b",
+        "\\\\b(next steps|plan|follow[- ]up|refer|emergency)\\\\b"
+      ],
+      "patterns_ar": [
+        "(خليني الخص|تلخيص|اللي فهمته)",
+        "(الخطوه القادمه|خطه|متابعه|تحويل|طوارئ)"
+      ]
+    },
+    {
+      "id": "finish_conv",
+      "desc": "How to Finish the cconversation properly with the patient",
+      "weight": 2.0,
+      "patterns_en": [
+        "\\\\b(to finish off|overall|complete|great to see you here)\\\\b"
+      ],
+      "patterns_ar": [
+        "(قبل ان ترحل| فالنهاية| تغادر| مغادرة)"
+      ]
+    }
+  ],
+  "globals": {
+    "communication_max": 5,
+    "judgment_max": 5
+  },
+  "pass_criteria": {
+    "min_percent": 0.5999999999999999,
+    "fail_on_flags": [
+      "SAFETY_CRITICAL"
+    ]
+  }
+}
