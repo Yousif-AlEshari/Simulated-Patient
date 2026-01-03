@@ -21,7 +21,7 @@ from typing import Any, Dict, List, Optional, Tuple
 from dotenv import load_dotenv
 from groq import Groq
 
-from trainee_judge_schema import (
+from .trainee_judge_schema import (
     load_rubric,
     build_response_format,
     rubric_fingerprint,

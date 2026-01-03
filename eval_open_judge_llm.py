@@ -1,3 +1,10 @@
+from pathlib import Path
+import sys
+
+APP_DIR = Path(__file__).resolve().parent
+if str(APP_DIR) not in sys.path:
+    sys.path.insert(0, str(APP_DIR))
+
 import os
 import json
 import streamlit as st
@@ -33,7 +40,7 @@ try:
 except Exception as e:
     TRAINEE_LLM_EVAL_AVAILABLE = False
     TRAINEE_LLM_IMPORT_ERROR = str(e)
-
+     
 # -----------------------------
 # Optional: legacy regex trainee evaluation (kept for comparison)
 # -----------------------------
