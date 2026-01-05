@@ -18,8 +18,9 @@ import hashlib
 from pathlib import Path
 from typing import Any, Dict, List
 from dotenv import load_dotenv
+from src.utils.paths import default_rubric_path
 
-DEFAULT_RUBRIC_PATH = Path(__file__).resolve().parent / "rubrics" / "psychiatry_intake.json"
+DEFAULT_RUBRIC_PATH = default_rubric_path()
 load_dotenv()
 
 def load_rubric(rubric_path: str | Path = DEFAULT_RUBRIC_PATH) -> Dict[str, Any]:

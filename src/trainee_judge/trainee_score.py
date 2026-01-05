@@ -29,9 +29,10 @@ import re
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 from dotenv import load_dotenv
+from src.utils.paths import default_rubric_path
 
 # Optional: reuse the same default rubric path convention as other files.
-DEFAULT_RUBRIC_PATH = Path(__file__).resolve().parent / "rubrics" / "psychiatry_intake.json"
+DEFAULT_RUBRIC_PATH = default_rubric_path()
 load_dotenv()
 
 # ----------------------------
