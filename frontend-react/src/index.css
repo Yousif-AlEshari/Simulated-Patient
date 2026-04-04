@@ -1253,3 +1253,138 @@ p {
 .page-transition {
     animation: pageFadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
+.session-page {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  min-height: 100vh;
+}
+
+.session-sidebar {
+  background: #f4f7fb;
+  padding: 20px;
+  border-right: 1px solid #ddd;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.session-main {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  gap: 16px;
+}
+
+.session-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.finish-btn {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  background: #dc2626;
+  color: white;
+}
+
+.chat-thread {
+  flex: 1;
+  min-height: 400px;
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.chat-message {
+  display: flex;
+}
+
+.chat-message.user {
+  justify-content: flex-end;
+}
+
+.chat-message.assistant {
+  justify-content: flex-start;
+}
+
+.chat-bubble {
+  max-width: 70%;
+  padding: 12px 14px;
+  border-radius: 12px;
+}
+
+.chat-message.user .chat-bubble {
+  background: #2563eb;
+  color: white;
+}
+
+.chat-message.assistant .chat-bubble {
+  background: #e5e7eb;
+  color: #111827;
+}
+
+.chat-input-form {
+  display: flex;
+  gap: 12px;
+}
+
+.chat-input-form input {
+  flex: 1;
+  padding: 12px;
+}
+
+.page-shell {
+  min-height: 100vh;
+  padding: 24px;
+}
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.summary-card,
+.feedback-card,
+.table-card,
+.sidebar-card {
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.evaluation-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.evaluation-table th,
+.evaluation-table td {
+  border-bottom: 1px solid #e5e7eb;
+  padding: 12px;
+  text-align: left;
+  vertical-align: top;
+}
+
+.error-banner {
+  background: #fee2e2;
+  color: #b91c1c;
+  padding: 12px;
+  border-radius: 8px;
+}
+
+@media (max-width: 900px) {
+  .session-page {
+    grid-template-columns: 1fr;
+  }
+
+  .summary-grid {
+    grid-template-columns: 1fr;
+  }
+}
