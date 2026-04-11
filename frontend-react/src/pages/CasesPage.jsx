@@ -88,6 +88,7 @@ const CasesPage = () => {
             >
               ⮌
             </Link>
+
             <div className="logo-text">
               PsychSim <span className="text-secondary">Trainee Dashboard</span>
             </div>
@@ -168,31 +169,11 @@ const CasesPage = () => {
                 style={{ animationDelay: `${index * 0.05}s`, height: '100%' }}
                 className="animate-on-scroll is-visible slide-up"
               >
-                <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-                  <CaseCard data={caseItem} />
-
-                  <div
-                    style={{
-                      marginTop: '1rem',
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      alignItems: 'center',
-                      gap: '0.75rem',
-                    }}
-                  >
-                    <span style={{ color: 'var(--text-muted)', fontSize: '0.95rem' }}>
-                      {caseItem.duration ? `⏱ ${caseItem.duration}` : ''}
-                    </span>
-
-                    <button
-                      className="btn btn-primary"
-                      onClick={() => handleStartCase(caseItem)}
-                      disabled={startingCaseId === caseItem.id}
-                    >
-                      {startingCaseId === caseItem.id ? 'Starting...' : 'Start'}
-                    </button>
-                  </div>
-                </div>
+                <CaseCard
+                  data={caseItem}
+                  onStart={() => handleStartCase(caseItem)}
+                  isStarting={startingCaseId === caseItem.id}
+                />
               </div>
             ))}
           </div>
