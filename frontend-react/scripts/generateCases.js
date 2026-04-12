@@ -6,7 +6,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const ROOT_DIR = path.resolve(__dirname, '../../');
-const ENV_PATH = path.join(__dirname, '../.env');
+const ENV_PATH = path.join(__dirname, '../.env'); // changed to frontend-react/.env
 const CASES_TXT_PATH = path.join(ROOT_DIR, 'Cases.txt');
 const OUT_DIR = path.join(__dirname, '../src/data');
 const OUT_PATH = path.join(OUT_DIR, 'cases.json');

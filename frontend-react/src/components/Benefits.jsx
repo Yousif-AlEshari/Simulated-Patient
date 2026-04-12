@@ -32,7 +32,7 @@ const Benefits = () => {
           </div>
           <div className="animate-on-scroll slide-in-right visual-wrapper">
             <div className="glass-panel stats-panel">
-              <h4>Performance Metrics</h4>
+              <h4>Cohort Analytics</h4>
               <div className="stat-row">
                 <span>Diagnostic Accuracy</span>
                 <div className="progress-bar"><div className="fill" style={{ width: '85%' }}></div></div>

@@ -3,8 +3,8 @@ const Features = () => {
     <section id="features" className="section bg-light">
       <div className="container">
         <div className="section-header center animate-on-scroll slide-up">
-          <h2>The Future of Training in the Age of AI</h2>
-          <p>Learn more about the first AI tool designed for mental health training.</p>
+          <h2>Modern Training at Your Fingertips</h2>
+          <p>Give your students the best AI tools designed for mental health training.</p>
         </div>
         <div className="grid layout-4">
 
