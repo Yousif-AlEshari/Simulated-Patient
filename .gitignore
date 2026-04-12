@@ -8,10 +8,11 @@ venv/
 # Local Databases
 *.db
 
-# Python Cache
+# Python Cache & Packages
 __pycache__/
 *.py[cod]
 *$py.class
+*.pyc
 
 # IDE & OS
 .vscode/
