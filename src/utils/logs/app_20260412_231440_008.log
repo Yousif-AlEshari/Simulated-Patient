@@ -1,0 +1,362 @@
+2026-04-12 23:14:41 | DEBUG    | src.utils.paths | project_root() -> D:\Year4\Semester 1\Capstone Project\Workspace\custom-simulated-patient
+2026-04-12 23:14:41 | DEBUG    | src.utils.paths | rubrics_dir() -> D:\Year4\Semester 1\Capstone Project\Workspace\custom-simulated-patient\rubrics
+2026-04-12 23:14:41 | DEBUG    | src.utils.paths | default_rubric_path('psychiatry_intake.json') -> D:\Year4\Semester 1\Capstone Project\Workspace\custom-simulated-patient\rubrics\psychiatry_intake.json
+2026-04-12 23:14:41 | DEBUG    | src.utils.paths | project_root() -> D:\Year4\Semester 1\Capstone Project\Workspace\custom-simulated-patient
+2026-04-12 23:14:42 | DEBUG    | src.utils.paths | rubrics_dir() -> D:\Year4\Semester 1\Capstone Project\Workspace\custom-simulated-patient\rubrics
+2026-04-12 23:14:42 | DEBUG    | src.utils.paths | default_rubric_path('psychiatry_intake.json') -> D:\Year4\Semester 1\Capstone Project\Workspace\custom-simulated-patient\rubrics\psychiatry_intake.json
+2026-04-12 23:14:42 | INFO     | api.main | Application startup: loading environment and initializing database
+2026-04-12 23:14:42 | INFO     | src.utils.env | Loading environment variables from .env file
+2026-04-12 23:14:42 | DEBUG    | src.utils.env | Environment variables loaded (override=False)
+2026-04-12 23:14:42 | DEBUG    | api.main | Environment variables loaded
+2026-04-12 23:14:42 | INFO     | api.database | Initializing MongoDB database
+2026-04-12 23:14:42 | DEBUG    | api.database | Database indexes created successfully
+2026-04-12 23:14:42 | DEBUG    | api.main | Database initialized
+2026-04-12 23:14:43 | INFO     | api.main | Application startup complete
+2026-04-12 23:14:59 | INFO     | api.routes.chat | Starting new session: condition='Depression', language='English'
+2026-04-12 23:14:59 | DEBUG    | api.routes.chat | Generated session_id=04ecb8c3-fbc2-4c66-87bf-99074bdb8330
+2026-04-12 23:14:59 | INFO     | src.patient_sim.groq_patient_sim | Attempting to generate patient profile: condition='Depression', language='English'
+2026-04-12 23:14:59 | DEBUG    | src.patient_sim.groq_patient_sim | Profile generation attempt 1/3
+2026-04-12 23:14:59 | DEBUG    | groq._base_client | Request options: {'method': 'post', 'url': '/openai/v1/chat/completions', 'files': None, 'idempotency_key': 'stainless-python-retry-ba645168-11a2-4b0e-852a-f8ad9449d46d', 'json_data': {'messages': [{'role': 'system', 'content': 'You are creating a psychiatric patient profile for medical training.\n\nCondition: Depression\nPatient language: English\n\nGenerate ONE realistic patient profile. Vary response_style and emotional_tone randomly each time.\n\nOutput ONLY valid JSON with these fields:\n- age (18-70)\n- gender ("male" or "female")\n- occupation (realistic job)\n- chief_complaint (what patient says about their main issue)\n- symptom_onset (when symptoms started)\n- symptom_severity ("mild", "moderate", or "severe")\n- relevant_life_events (list of 1-3 past events)\n- past_psychiatric_history (previous treatment or "none")\n- current_medications (list of meds or empty list)\n- substance_use (substance use or "none")\n- risk_positive (true or false - roughly 30% true)\n- risk_detail (if risk_positive is true, one sentence about passive ideation; else "")\n- response_style (RANDOMIZE: "terse", "normal", or "verbose" - should vary each time)\n- emotional_tone (RANDOMIZE: pick from "flat", "anxious", "guarded", "tearful", "irritable", "evasive" - should vary each time)\n- freely_disclose (list of topics patient brings up unprompted)\n- disclose_if_asked (list of topics only if asked directly)\n- resist_disclosing (list of 1-2 topics patient avoids)\n\nKey guidelines:\n1. Make the profile realistic and medically plausible\n2. IMPORTANT: Vary response_style and emotional_tone - never use the same values twice in a row\n3. Match disclosure topics to the condition (e.g., depression: more withdrawn; anxiety: more worried)\n4. If risk_positive is true, include suicidal ideation mention in risk_detail and in resist_disclosing\n5. Return ONLY the JSON object - no markdown, no code blocks, no explanation'}, {'role': 'user', 'content': 'Generate a patient profile for the condition: Depression, responding in English. Return ONLY valid JSON, no markdown.'}], 'model': 'openai/gpt-oss-20b', 'max_completion_tokens': 1024, 'stream': False, 'temperature': 1.5}}
+2026-04-12 23:14:59 | DEBUG    | groq._base_client | Sending HTTP Request: POST https://api.groq.com/openai/v1/chat/completions
+2026-04-12 23:14:59 | DEBUG    | httpcore.connection | connect_tcp.started host='api.groq.com' port=443 local_address=None timeout=5.0 socket_options=None
+2026-04-12 23:15:00 | DEBUG    | httpcore.connection | connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x000001BC00709430>
+2026-04-12 23:15:00 | DEBUG    | httpcore.connection | start_tls.started ssl_context=<ssl.SSLContext object at 0x000001BC0059D050> server_hostname='api.groq.com' timeout=5.0
+2026-04-12 23:15:00 | DEBUG    | httpcore.connection | start_tls.complete return_value=<httpcore._backends.sync.SyncStream object at 0x000001BC006B48F0>
+2026-04-12 23:15:00 | DEBUG    | httpcore.http11 | send_request_headers.started request=<Request [b'POST']>
+2026-04-12 23:15:00 | DEBUG    | httpcore.http11 | send_request_headers.complete
+2026-04-12 23:15:00 | DEBUG    | httpcore.http11 | send_request_body.started request=<Request [b'POST']>
+2026-04-12 23:15:00 | DEBUG    | httpcore.http11 | send_request_body.complete
+2026-04-12 23:15:00 | DEBUG    | httpcore.http11 | receive_response_headers.started request=<Request [b'POST']>
+2026-04-12 23:15:00 | DEBUG    | httpcore.http11 | receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'Date', b'Sun, 12 Apr 2026 20:15:00 GMT'), (b'Content-Type', b'application/json'), (b'Transfer-Encoding', b'chunked'), (b'Connection', b'keep-alive'), (b'Cache-Control', b'private, max-age=0, no-store, no-cache, must-revalidate'), (b'Server', b'cloudflare'), (b'vary', b'Origin'), (b'x-groq-region', b'fra'), (b'x-ratelimit-limit-requests', b'1000'), (b'x-ratelimit-limit-tokens', b'8000'), (b'x-ratelimit-remaining-requests', b'999'), (b'x-ratelimit-remaining-tokens', b'6479'), (b'x-ratelimit-reset-requests', b'1m26.4s'), (b'x-ratelimit-reset-tokens', b'11.407s'), (b'x-request-id', b'req_01kp1nam7je5rred9cac9ck4sb'), (b'via', b'1.1 google'), (b'cf-cache-status', b'DYNAMIC'), (b'set-cookie', b'__cf_bm=D9or0.kIwvrNll.tkIxt5KSts_AcMd5ngvj93ESZ7GU-1776024899.6687105-1.0.1.1-z2188.2OXD51QkzH1.n6aTj8gDC.psHey.W9FKicv2XT5tytKLqk8OxNKxJcay3eKBMcwlpoFYqdwiHcFFLdYEFnJwT6_cuhYF6pGSF_QP2wVHr68dwPYe.0kpBiNe7l; HttpOnly; Secure; Path=/; Domain=groq.com; Expires=Sun, 12 Apr 2026 20:45:00 GMT'), (b'Strict-Transport-Security', b'max-age=15552000'), (b'Content-Encoding', b'gzip'), (b'CF-RAY', b'9eb4e686ea5a4b5b-AMM'), (b'alt-svc', b'h3=":443"; ma=86400')])
+2026-04-12 23:15:00 | INFO     | httpx | HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-12 23:15:00 | DEBUG    | httpcore.http11 | receive_response_body.started request=<Request [b'POST']>
+2026-04-12 23:15:00 | DEBUG    | httpcore.http11 | receive_response_body.complete
+2026-04-12 23:15:00 | DEBUG    | httpcore.http11 | response_closed.started
+2026-04-12 23:15:00 | DEBUG    | httpcore.http11 | response_closed.complete
+2026-04-12 23:15:00 | DEBUG    | groq._base_client | HTTP Response: POST https://api.groq.com/openai/v1/chat/completions "200 OK" Headers({'date': 'Sun, 12 Apr 2026 20:15:00 GMT', 'content-type': 'application/json', 'transfer-encoding': 'chunked', 'connection': 'keep-alive', 'cache-control': 'private, max-age=0, no-store, no-cache, must-revalidate', 'server': 'cloudflare', 'vary': 'Origin', 'x-groq-region': 'fra', 'x-ratelimit-limit-requests': '1000', 'x-ratelimit-limit-tokens': '8000', 'x-ratelimit-remaining-requests': '999', 'x-ratelimit-remaining-tokens': '6479', 'x-ratelimit-reset-requests': '1m26.4s', 'x-ratelimit-reset-tokens': '11.407s', 'x-request-id': 'req_01kp1nam7je5rred9cac9ck4sb', 'via': '1.1 google', 'cf-cache-status': 'DYNAMIC', 'set-cookie': '__cf_bm=D9or0.kIwvrNll.tkIxt5KSts_AcMd5ngvj93ESZ7GU-1776024899.6687105-1.0.1.1-z2188.2OXD51QkzH1.n6aTj8gDC.psHey.W9FKicv2XT5tytKLqk8OxNKxJcay3eKBMcwlpoFYqdwiHcFFLdYEFnJwT6_cuhYF6pGSF_QP2wVHr68dwPYe.0kpBiNe7l; HttpOnly; Secure; Path=/; Domain=groq.com; Expires=Sun, 12 Apr 2026 20:45:00 GMT', 'strict-transport-security': 'max-age=15552000', 'content-encoding': 'gzip', 'cf-ray': '9eb4e686ea5a4b5b-AMM', 'alt-svc': 'h3=":443"; ma=86400'})
+2026-04-12 23:15:00 | DEBUG    | src.patient_sim.groq_patient_sim | LLM response received, parsing JSON
+2026-04-12 23:15:00 | INFO     | src.patient_sim.groq_patient_sim | Patient profile generated successfully on attempt 1/3
+2026-04-12 23:15:00 | INFO     | src.patient_sim.groq_patient_sim | src.patient_sim.groq_patient_sim.generate_profile completed in 1.25s
+2026-04-12 23:15:00 | DEBUG    | src.patient_sim.prompts | build_system_prompt_from_profile: condition='Depression', age=34, gender='female', response_style='normal', emotional_tone='tearful', risk_positive=True
+2026-04-12 23:15:00 | INFO     | api.routes.chat | Patient profile generated successfully for 04ecb8c3-fbc2-4c66-87bf-99074bdb8330
+2026-04-12 23:15:00 | INFO     | api.database | Saving session: session_id='04ecb8c3-fbc2-4c66-87bf-99074bdb8330', condition='Depression', language='English'
+2026-04-12 23:15:00 | DEBUG    | api.database | Session saved, expires at 2026-04-12T20:25:00.934232+00:00
+2026-04-12 23:15:00 | INFO     | api.routes.chat | Session started: 04ecb8c3-fbc2-4c66-87bf-99074bdb8330
+2026-04-12 23:15:00 | DEBUG    | api.database | Fetching session info: '04ecb8c3-fbc2-4c66-87bf-99074bdb8330'
+2026-04-12 23:15:01 | DEBUG    | api.database | Session found: expires_at check for '04ecb8c3-fbc2-4c66-87bf-99074bdb8330'
+2026-04-12 23:15:01 | DEBUG    | api.database | Fetching session info: '04ecb8c3-fbc2-4c66-87bf-99074bdb8330'
+2026-04-12 23:15:01 | DEBUG    | api.database | Session found: expires_at check for '04ecb8c3-fbc2-4c66-87bf-99074bdb8330'
+2026-04-12 23:15:02 | DEBUG    | api.database | Fetching session info: '04ecb8c3-fbc2-4c66-87bf-99074bdb8330'
+2026-04-12 23:15:02 | DEBUG    | api.database | Session found: expires_at check for '04ecb8c3-fbc2-4c66-87bf-99074bdb8330'
+2026-04-12 23:15:03 | DEBUG    | api.database | Fetching session info: '04ecb8c3-fbc2-4c66-87bf-99074bdb8330'
+2026-04-12 23:15:03 | DEBUG    | api.database | Session found: expires_at check for '04ecb8c3-fbc2-4c66-87bf-99074bdb8330'
+2026-04-12 23:15:04 | DEBUG    | api.database | Fetching session info: '04ecb8c3-fbc2-4c66-87bf-99074bdb8330'
+2026-04-12 23:15:04 | DEBUG    | api.database | Session found: expires_at check for '04ecb8c3-fbc2-4c66-87bf-99074bdb8330'
+2026-04-12 23:15:05 | DEBUG    | api.database | Fetching session info: '04ecb8c3-fbc2-4c66-87bf-99074bdb8330'
+2026-04-12 23:15:05 | DEBUG    | api.database | Session found: expires_at check for '04ecb8c3-fbc2-4c66-87bf-99074bdb8330'
+2026-04-12 23:15:06 | DEBUG    | api.database | Fetching session info: '04ecb8c3-fbc2-4c66-87bf-99074bdb8330'
+2026-04-12 23:15:06 | DEBUG    | api.database | Session found: expires_at check for '04ecb8c3-fbc2-4c66-87bf-99074bdb8330'
+2026-04-12 23:15:07 | DEBUG    | api.database | Fetching session info: '04ecb8c3-fbc2-4c66-87bf-99074bdb8330'
+2026-04-12 23:15:07 | DEBUG    | api.database | Session found: expires_at check for '04ecb8c3-fbc2-4c66-87bf-99074bdb8330'
+2026-04-12 23:15:08 | DEBUG    | api.database | Fetching session info: '04ecb8c3-fbc2-4c66-87bf-99074bdb8330'
+2026-04-12 23:15:08 | DEBUG    | api.database | Session found: expires_at check for '04ecb8c3-fbc2-4c66-87bf-99074bdb8330'
+2026-04-12 23:15:09 | DEBUG    | api.database | Fetching session info: '04ecb8c3-fbc2-4c66-87bf-99074bdb8330'
+2026-04-12 23:15:09 | DEBUG    | api.database | Session found: expires_at check for '04ecb8c3-fbc2-4c66-87bf-99074bdb8330'
+2026-04-12 23:15:10 | DEBUG    | api.database | Fetching session info: '04ecb8c3-fbc2-4c66-87bf-99074bdb8330'
+2026-04-12 23:15:10 | DEBUG    | api.database | Session found: expires_at check for '04ecb8c3-fbc2-4c66-87bf-99074bdb8330'
+2026-04-12 23:15:11 | DEBUG    | api.database | Fetching session info: '04ecb8c3-fbc2-4c66-87bf-99074bdb8330'
+2026-04-12 23:15:11 | DEBUG    | api.database | Session found: expires_at check for '04ecb8c3-fbc2-4c66-87bf-99074bdb8330'
+2026-04-12 23:15:12 | DEBUG    | api.database | Fetching session info: '04ecb8c3-fbc2-4c66-87bf-99074bdb8330'
+2026-04-12 23:15:12 | DEBUG    | api.database | Session found: expires_at check for '04ecb8c3-fbc2-4c66-87bf-99074bdb8330'
+2026-04-12 23:15:13 | DEBUG    | api.database | Fetching session info: '04ecb8c3-fbc2-4c66-87bf-99074bdb8330'
+2026-04-12 23:15:13 | DEBUG    | api.database | Session found: expires_at check for '04ecb8c3-fbc2-4c66-87bf-99074bdb8330'
+2026-04-12 23:15:14 | DEBUG    | api.database | Fetching session info: '04ecb8c3-fbc2-4c66-87bf-99074bdb8330'
+2026-04-12 23:15:14 | DEBUG    | api.database | Session found: expires_at check for '04ecb8c3-fbc2-4c66-87bf-99074bdb8330'
+2026-04-12 23:15:24 | INFO     | api.routes.chat | Starting new session: condition='Depression', language='English'
+2026-04-12 23:15:24 | DEBUG    | api.routes.chat | Generated session_id=df071bc2-3919-4b1b-8f8c-c4af7c493b10
+2026-04-12 23:15:24 | INFO     | src.patient_sim.groq_patient_sim | Attempting to generate patient profile: condition='Depression', language='English'
+2026-04-12 23:15:24 | DEBUG    | src.patient_sim.groq_patient_sim | Profile generation attempt 1/3
+2026-04-12 23:15:24 | DEBUG    | groq._base_client | Request options: {'method': 'post', 'url': '/openai/v1/chat/completions', 'files': None, 'idempotency_key': 'stainless-python-retry-3631523f-d027-4f32-9ac2-4ebb8d26d73f', 'json_data': {'messages': [{'role': 'system', 'content': 'You are creating a psychiatric patient profile for medical training.\n\nCondition: Depression\nPatient language: English\n\nGenerate ONE realistic patient profile. Vary response_style and emotional_tone randomly each time.\n\nOutput ONLY valid JSON with these fields:\n- age (18-70)\n- gender ("male" or "female")\n- occupation (realistic job)\n- chief_complaint (what patient says about their main issue)\n- symptom_onset (when symptoms started)\n- symptom_severity ("mild", "moderate", or "severe")\n- relevant_life_events (list of 1-3 past events)\n- past_psychiatric_history (previous treatment or "none")\n- current_medications (list of meds or empty list)\n- substance_use (substance use or "none")\n- risk_positive (true or false - roughly 30% true)\n- risk_detail (if risk_positive is true, one sentence about passive ideation; else "")\n- response_style (RANDOMIZE: "terse", "normal", or "verbose" - should vary each time)\n- emotional_tone (RANDOMIZE: pick from "flat", "anxious", "guarded", "tearful", "irritable", "evasive" - should vary each time)\n- freely_disclose (list of topics patient brings up unprompted)\n- disclose_if_asked (list of topics only if asked directly)\n- resist_disclosing (list of 1-2 topics patient avoids)\n\nKey guidelines:\n1. Make the profile realistic and medically plausible\n2. IMPORTANT: Vary response_style and emotional_tone - never use the same values twice in a row\n3. Match disclosure topics to the condition (e.g., depression: more withdrawn; anxiety: more worried)\n4. If risk_positive is true, include suicidal ideation mention in risk_detail and in resist_disclosing\n5. Return ONLY the JSON object - no markdown, no code blocks, no explanation'}, {'role': 'user', 'content': 'Generate a patient profile for the condition: Depression, responding in English. Return ONLY valid JSON, no markdown.'}], 'model': 'openai/gpt-oss-20b', 'max_completion_tokens': 1024, 'stream': False, 'temperature': 1.5}}
+2026-04-12 23:15:24 | DEBUG    | groq._base_client | Sending HTTP Request: POST https://api.groq.com/openai/v1/chat/completions
+2026-04-12 23:15:24 | DEBUG    | httpcore.connection | close.started
+2026-04-12 23:15:24 | DEBUG    | httpcore.connection | close.complete
+2026-04-12 23:15:24 | DEBUG    | httpcore.connection | connect_tcp.started host='api.groq.com' port=443 local_address=None timeout=5.0 socket_options=None
+2026-04-12 23:15:24 | DEBUG    | httpcore.connection | connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x000001BC00740260>
+2026-04-12 23:15:24 | DEBUG    | httpcore.connection | start_tls.started ssl_context=<ssl.SSLContext object at 0x000001BC0059D050> server_hostname='api.groq.com' timeout=5.0
+2026-04-12 23:15:24 | DEBUG    | httpcore.connection | start_tls.complete return_value=<httpcore._backends.sync.SyncStream object at 0x000001BC7FECFDA0>
+2026-04-12 23:15:24 | DEBUG    | httpcore.http11 | send_request_headers.started request=<Request [b'POST']>
+2026-04-12 23:15:24 | DEBUG    | httpcore.http11 | send_request_headers.complete
+2026-04-12 23:15:24 | DEBUG    | httpcore.http11 | send_request_body.started request=<Request [b'POST']>
+2026-04-12 23:15:24 | DEBUG    | httpcore.http11 | send_request_body.complete
+2026-04-12 23:15:24 | DEBUG    | httpcore.http11 | receive_response_headers.started request=<Request [b'POST']>
+2026-04-12 23:15:26 | DEBUG    | httpcore.http11 | receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'Date', b'Sun, 12 Apr 2026 20:15:25 GMT'), (b'Content-Type', b'application/json'), (b'Transfer-Encoding', b'chunked'), (b'Connection', b'keep-alive'), (b'Cache-Control', b'private, max-age=0, no-store, no-cache, must-revalidate'), (b'Server', b'cloudflare'), (b'vary', b'Origin'), (b'x-groq-region', b'fra'), (b'x-ratelimit-limit-requests', b'1000'), (b'x-ratelimit-limit-tokens', b'8000'), (b'x-ratelimit-remaining-requests', b'998'), (b'x-ratelimit-remaining-tokens', b'7023'), (b'x-ratelimit-reset-requests', b'2m52.8s'), (b'x-ratelimit-reset-tokens', b'7.327s'), (b'x-request-id', b'req_01kp1nbc9webdstayz2b8s4w05'), (b'via', b'1.1 google'), (b'cf-cache-status', b'DYNAMIC'), (b'Strict-Transport-Security', b'max-age=15552000'), (b'Content-Encoding', b'gzip'), (b'CF-RAY', b'9eb4e721b9acf033-AMM'), (b'alt-svc', b'h3=":443"; ma=86400')])
+2026-04-12 23:15:26 | INFO     | httpx | HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-12 23:15:26 | DEBUG    | httpcore.http11 | receive_response_body.started request=<Request [b'POST']>
+2026-04-12 23:15:26 | DEBUG    | httpcore.http11 | receive_response_body.complete
+2026-04-12 23:15:26 | DEBUG    | httpcore.http11 | response_closed.started
+2026-04-12 23:15:26 | DEBUG    | httpcore.http11 | response_closed.complete
+2026-04-12 23:15:26 | DEBUG    | groq._base_client | HTTP Response: POST https://api.groq.com/openai/v1/chat/completions "200 OK" Headers({'date': 'Sun, 12 Apr 2026 20:15:25 GMT', 'content-type': 'application/json', 'transfer-encoding': 'chunked', 'connection': 'keep-alive', 'cache-control': 'private, max-age=0, no-store, no-cache, must-revalidate', 'server': 'cloudflare', 'vary': 'Origin', 'x-groq-region': 'fra', 'x-ratelimit-limit-requests': '1000', 'x-ratelimit-limit-tokens': '8000', 'x-ratelimit-remaining-requests': '998', 'x-ratelimit-remaining-tokens': '7023', 'x-ratelimit-reset-requests': '2m52.8s', 'x-ratelimit-reset-tokens': '7.327s', 'x-request-id': 'req_01kp1nbc9webdstayz2b8s4w05', 'via': '1.1 google', 'cf-cache-status': 'DYNAMIC', 'strict-transport-security': 'max-age=15552000', 'content-encoding': 'gzip', 'cf-ray': '9eb4e721b9acf033-AMM', 'alt-svc': 'h3=":443"; ma=86400'})
+2026-04-12 23:15:26 | DEBUG    | src.patient_sim.groq_patient_sim | LLM response received, parsing JSON
+2026-04-12 23:15:26 | WARNING  | src.patient_sim.groq_patient_sim | JSON parse error on attempt 1/3: Unterminated string starting at: line 1 column 350 (char 349)
+2026-04-12 23:15:26 | DEBUG    | src.patient_sim.groq_patient_sim | Retrying after 1s
+2026-04-12 23:15:27 | DEBUG    | src.patient_sim.groq_patient_sim | Profile generation attempt 2/3
+2026-04-12 23:15:27 | DEBUG    | groq._base_client | Request options: {'method': 'post', 'url': '/openai/v1/chat/completions', 'files': None, 'idempotency_key': 'stainless-python-retry-7215fa94-3a49-4c8d-b064-c7ded167b891', 'json_data': {'messages': [{'role': 'system', 'content': 'You are creating a psychiatric patient profile for medical training.\n\nCondition: Depression\nPatient language: English\n\nGenerate ONE realistic patient profile. Vary response_style and emotional_tone randomly each time.\n\nOutput ONLY valid JSON with these fields:\n- age (18-70)\n- gender ("male" or "female")\n- occupation (realistic job)\n- chief_complaint (what patient says about their main issue)\n- symptom_onset (when symptoms started)\n- symptom_severity ("mild", "moderate", or "severe")\n- relevant_life_events (list of 1-3 past events)\n- past_psychiatric_history (previous treatment or "none")\n- current_medications (list of meds or empty list)\n- substance_use (substance use or "none")\n- risk_positive (true or false - roughly 30% true)\n- risk_detail (if risk_positive is true, one sentence about passive ideation; else "")\n- response_style (RANDOMIZE: "terse", "normal", or "verbose" - should vary each time)\n- emotional_tone (RANDOMIZE: pick from "flat", "anxious", "guarded", "tearful", "irritable", "evasive" - should vary each time)\n- freely_disclose (list of topics patient brings up unprompted)\n- disclose_if_asked (list of topics only if asked directly)\n- resist_disclosing (list of 1-2 topics patient avoids)\n\nKey guidelines:\n1. Make the profile realistic and medically plausible\n2. IMPORTANT: Vary response_style and emotional_tone - never use the same values twice in a row\n3. Match disclosure topics to the condition (e.g., depression: more withdrawn; anxiety: more worried)\n4. If risk_positive is true, include suicidal ideation mention in risk_detail and in resist_disclosing\n5. Return ONLY the JSON object - no markdown, no code blocks, no explanation'}, {'role': 'user', 'content': 'Generate a patient profile for the condition: Depression, responding in English. Return ONLY valid JSON, no markdown.'}], 'model': 'openai/gpt-oss-20b', 'max_completion_tokens': 1024, 'stream': False, 'temperature': 1.5}}
+2026-04-12 23:15:27 | DEBUG    | groq._base_client | Sending HTTP Request: POST https://api.groq.com/openai/v1/chat/completions
+2026-04-12 23:15:27 | DEBUG    | httpcore.http11 | send_request_headers.started request=<Request [b'POST']>
+2026-04-12 23:15:27 | DEBUG    | httpcore.http11 | send_request_headers.complete
+2026-04-12 23:15:27 | DEBUG    | httpcore.http11 | send_request_body.started request=<Request [b'POST']>
+2026-04-12 23:15:27 | DEBUG    | httpcore.http11 | send_request_body.complete
+2026-04-12 23:15:27 | DEBUG    | httpcore.http11 | receive_response_headers.started request=<Request [b'POST']>
+2026-04-12 23:15:28 | DEBUG    | httpcore.http11 | receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'Date', b'Sun, 12 Apr 2026 20:15:27 GMT'), (b'Content-Type', b'application/json'), (b'Transfer-Encoding', b'chunked'), (b'Connection', b'keep-alive'), (b'Cache-Control', b'private, max-age=0, no-store, no-cache, must-revalidate'), (b'Server', b'cloudflare'), (b'vary', b'Origin'), (b'x-groq-region', b'fra'), (b'x-ratelimit-limit-requests', b'1000'), (b'x-ratelimit-limit-tokens', b'8000'), (b'x-ratelimit-remaining-requests', b'997'), (b'x-ratelimit-remaining-tokens', b'5803'), (b'x-ratelimit-reset-requests', b'4m19.2s'), (b'x-ratelimit-reset-tokens', b'16.477s'), (b'x-request-id', b'req_01kp1nbegmec0s6t3hzwptv5tm'), (b'via', b'1.1 google'), (b'cf-cache-status', b'DYNAMIC'), (b'Strict-Transport-Security', b'max-age=15552000'), (b'Content-Encoding', b'gzip'), (b'CF-RAY', b'9eb4e72feeb4f033-AMM'), (b'alt-svc', b'h3=":443"; ma=86400')])
+2026-04-12 23:15:28 | INFO     | httpx | HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-12 23:15:28 | DEBUG    | httpcore.http11 | receive_response_body.started request=<Request [b'POST']>
+2026-04-12 23:15:28 | DEBUG    | httpcore.http11 | receive_response_body.complete
+2026-04-12 23:15:28 | DEBUG    | httpcore.http11 | response_closed.started
+2026-04-12 23:15:28 | DEBUG    | httpcore.http11 | response_closed.complete
+2026-04-12 23:15:28 | DEBUG    | groq._base_client | HTTP Response: POST https://api.groq.com/openai/v1/chat/completions "200 OK" Headers({'date': 'Sun, 12 Apr 2026 20:15:27 GMT', 'content-type': 'application/json', 'transfer-encoding': 'chunked', 'connection': 'keep-alive', 'cache-control': 'private, max-age=0, no-store, no-cache, must-revalidate', 'server': 'cloudflare', 'vary': 'Origin', 'x-groq-region': 'fra', 'x-ratelimit-limit-requests': '1000', 'x-ratelimit-limit-tokens': '8000', 'x-ratelimit-remaining-requests': '997', 'x-ratelimit-remaining-tokens': '5803', 'x-ratelimit-reset-requests': '4m19.2s', 'x-ratelimit-reset-tokens': '16.477s', 'x-request-id': 'req_01kp1nbegmec0s6t3hzwptv5tm', 'via': '1.1 google', 'cf-cache-status': 'DYNAMIC', 'strict-transport-security': 'max-age=15552000', 'content-encoding': 'gzip', 'cf-ray': '9eb4e72feeb4f033-AMM', 'alt-svc': 'h3=":443"; ma=86400'})
+2026-04-12 23:15:28 | DEBUG    | src.patient_sim.groq_patient_sim | LLM response received, parsing JSON
+2026-04-12 23:15:28 | INFO     | src.patient_sim.groq_patient_sim | Patient profile generated successfully on attempt 2/3
+2026-04-12 23:15:28 | INFO     | src.patient_sim.groq_patient_sim | src.patient_sim.groq_patient_sim.generate_profile completed in 3.48s
+2026-04-12 23:15:28 | DEBUG    | src.patient_sim.prompts | build_system_prompt_from_profile: condition='Depression', age=43, gender='male', response_style='verbose', emotional_tone='tearful', risk_positive=True
+2026-04-12 23:15:28 | INFO     | api.routes.chat | Patient profile generated successfully for df071bc2-3919-4b1b-8f8c-c4af7c493b10
+2026-04-12 23:15:28 | INFO     | api.database | Saving session: session_id='df071bc2-3919-4b1b-8f8c-c4af7c493b10', condition='Depression', language='English'
+2026-04-12 23:15:28 | DEBUG    | api.database | Session saved, expires at 2026-04-12T20:25:28.257026+00:00
+2026-04-12 23:15:28 | INFO     | api.routes.chat | Session started: df071bc2-3919-4b1b-8f8c-c4af7c493b10
+2026-04-12 23:15:28 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:15:28 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:15:28 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:15:28 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:15:29 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:15:29 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:15:30 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:15:30 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:15:31 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:15:31 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:15:32 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:15:32 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:15:33 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:15:33 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:15:34 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:15:34 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:15:35 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:15:35 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:15:36 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:15:36 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:15:37 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:15:37 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:15:38 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:15:38 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:15:39 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:15:39 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:15:40 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:15:40 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:15:41 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:15:41 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:15:42 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:15:42 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:15:43 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:15:43 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:15:44 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:15:44 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:15:45 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:15:45 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:15:46 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:15:46 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:15:46 | INFO     | src.patient_sim.groq_patient_sim | Groq patient generation: model=openai/gpt-oss-120b, temp=1.0
+2026-04-12 23:15:46 | DEBUG    | src.patient_sim.groq_patient_sim | Conversation history: 2 messages
+2026-04-12 23:15:46 | DEBUG    | groq._base_client | Sending HTTP Request: POST https://api.groq.com/openai/v1/chat/completions
+2026-04-12 23:15:46 | DEBUG    | httpcore.connection | close.started
+2026-04-12 23:15:46 | DEBUG    | httpcore.connection | close.complete
+2026-04-12 23:15:46 | DEBUG    | httpcore.connection | connect_tcp.started host='api.groq.com' port=443 local_address=None timeout=5.0 socket_options=None
+2026-04-12 23:15:46 | DEBUG    | httpcore.connection | connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x000001BC00742C90>
+2026-04-12 23:15:46 | DEBUG    | httpcore.connection | start_tls.started ssl_context=<ssl.SSLContext object at 0x000001BC0059D050> server_hostname='api.groq.com' timeout=5.0
+2026-04-12 23:15:46 | DEBUG    | httpcore.connection | start_tls.complete return_value=<httpcore._backends.sync.SyncStream object at 0x000001BC00742C00>
+2026-04-12 23:15:46 | DEBUG    | httpcore.http11 | send_request_headers.started request=<Request [b'POST']>
+2026-04-12 23:15:46 | DEBUG    | httpcore.http11 | send_request_headers.complete
+2026-04-12 23:15:46 | DEBUG    | httpcore.http11 | send_request_body.started request=<Request [b'POST']>
+2026-04-12 23:15:46 | DEBUG    | httpcore.http11 | send_request_body.complete
+2026-04-12 23:15:46 | DEBUG    | httpcore.http11 | receive_response_headers.started request=<Request [b'POST']>
+2026-04-12 23:15:46 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:15:46 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:15:46 | DEBUG    | httpcore.http11 | receive_response_headers.complete return_value=(b'HTTP/1.1', 413, b'Payload Too Large', [(b'Date', b'Sun, 12 Apr 2026 20:15:45 GMT'), (b'Content-Type', b'application/json'), (b'Content-Length', b'385'), (b'Connection', b'keep-alive'), (b'Cache-Control', b'private, max-age=0, no-store, no-cache, must-revalidate'), (b'retry-after', b'11'), (b'Server', b'cloudflare'), (b'vary', b'Origin'), (b'x-groq-region', b'fra'), (b'x-ratelimit-limit-requests', b'1000'), (b'x-ratelimit-limit-tokens', b'8000'), (b'x-ratelimit-remaining-requests', b'1000'), (b'x-ratelimit-remaining-tokens', b'8000'), (b'x-ratelimit-reset-requests', b'1ms'), (b'x-ratelimit-reset-tokens', b'1ms'), (b'x-request-id', b'req_01kp1nc16kefyvrym1c8xzndmz'), (b'via', b'1.1 google'), (b'cf-cache-status', b'DYNAMIC'), (b'Strict-Transport-Security', b'max-age=15552000'), (b'CF-RAY', b'9eb4e7a77ac578e2-AMM'), (b'alt-svc', b'h3=":443"; ma=86400')])
+2026-04-12 23:15:46 | INFO     | httpx | HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 413 Payload Too Large"
+2026-04-12 23:15:46 | DEBUG    | httpcore.http11 | receive_response_body.started request=<Request [b'POST']>
+2026-04-12 23:15:46 | DEBUG    | httpcore.http11 | receive_response_body.complete
+2026-04-12 23:15:46 | DEBUG    | httpcore.http11 | response_closed.started
+2026-04-12 23:15:46 | DEBUG    | httpcore.http11 | response_closed.complete
+2026-04-12 23:15:46 | DEBUG    | groq._base_client | HTTP Response: POST https://api.groq.com/openai/v1/chat/completions "413 Payload Too Large" Headers({'date': 'Sun, 12 Apr 2026 20:15:45 GMT', 'content-type': 'application/json', 'content-length': '385', 'connection': 'keep-alive', 'cache-control': 'private, max-age=0, no-store, no-cache, must-revalidate', 'retry-after': '11', 'server': 'cloudflare', 'vary': 'Origin', 'x-groq-region': 'fra', 'x-ratelimit-limit-requests': '1000', 'x-ratelimit-limit-tokens': '8000', 'x-ratelimit-remaining-requests': '1000', 'x-ratelimit-remaining-tokens': '8000', 'x-ratelimit-reset-requests': '1ms', 'x-ratelimit-reset-tokens': '1ms', 'x-request-id': 'req_01kp1nc16kefyvrym1c8xzndmz', 'via': '1.1 google', 'cf-cache-status': 'DYNAMIC', 'strict-transport-security': 'max-age=15552000', 'cf-ray': '9eb4e7a77ac578e2-AMM', 'alt-svc': 'h3=":443"; ma=86400'})
+2026-04-12 23:15:46 | DEBUG    | groq._base_client | Encountered httpx.HTTPStatusError
+Traceback (most recent call last):
+  File "D:\Year4\Semester 1\Capstone Project\Workspace\custom-simulated-patient\.venv\Lib\site-packages\groq\_base_client.py", line 1024, in request
+    response.raise_for_status()
+  File "D:\Year4\Semester 1\Capstone Project\Workspace\custom-simulated-patient\.venv\Lib\site-packages\httpx\_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '413 Payload Too Large' for url 'https://api.groq.com/openai/v1/chat/completions'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/413
+2026-04-12 23:15:46 | DEBUG    | groq._base_client | Not retrying
+2026-04-12 23:15:46 | DEBUG    | groq._base_client | Re-raising status error
+2026-04-12 23:15:47 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:15:47 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:15:48 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:15:48 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:15:49 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:15:49 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:15:50 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:15:50 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:15:51 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:15:51 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:15:52 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:15:52 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:15:53 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:15:53 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:15:54 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:15:54 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:15:55 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:15:55 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:15:56 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:15:56 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:15:57 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:15:57 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:15:58 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:15:58 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:15:59 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:15:59 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:00 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:00 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:01 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:01 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:02 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:02 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:03 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:03 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:04 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:04 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:05 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:05 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:06 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:06 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:07 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:07 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:08 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:08 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:09 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:09 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:10 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:10 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:11 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:11 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:12 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:12 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:13 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:13 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:14 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:14 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:15 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:15 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:16 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:16 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:17 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:17 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:19 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:19 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:19 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:19 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:20 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:20 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:21 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:21 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:22 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:22 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:23 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:23 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:24 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:24 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:25 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:25 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:26 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:26 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:27 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:27 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:28 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:28 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:29 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:29 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:30 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:30 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:31 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:31 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:32 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:32 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:33 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:33 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:34 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:34 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:35 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:35 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:36 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:36 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:37 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:37 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:38 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:38 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:39 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:39 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:40 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:40 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:41 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:41 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:42 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:42 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:43 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:43 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:44 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:44 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:45 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:45 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:46 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:46 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:47 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:47 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:48 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:48 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:49 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:49 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:50 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:50 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:51 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:51 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:52 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:52 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:53 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:53 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:54 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:54 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:55 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:55 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:56 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:56 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:57 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:57 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:58 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:58 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:59 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:16:59 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:17:00 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:17:00 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:17:01 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:17:01 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:17:02 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:17:02 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:17:03 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:17:03 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:17:04 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:17:04 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:17:05 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:17:05 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:17:06 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:17:06 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:17:07 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:17:07 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:18:04 | DEBUG    | api.database | Fetching session info: 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:18:04 | DEBUG    | api.database | Session found: expires_at check for 'df071bc2-3919-4b1b-8f8c-c4af7c493b10'
+2026-04-12 23:18:50 | INFO     | api.main | Application shutdown

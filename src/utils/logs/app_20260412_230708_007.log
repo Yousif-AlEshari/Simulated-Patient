@@ -1,0 +1,11 @@
+2026-04-12 23:07:10 | DEBUG    | src.utils.paths | project_root() -> D:\Year4\Semester 1\Capstone Project\Workspace\custom-simulated-patient
+2026-04-12 23:07:10 | DEBUG    | src.utils.paths | rubrics_dir() -> D:\Year4\Semester 1\Capstone Project\Workspace\custom-simulated-patient\rubrics
+2026-04-12 23:07:10 | DEBUG    | src.utils.paths | default_rubric_path('psychiatry_intake.json') -> D:\Year4\Semester 1\Capstone Project\Workspace\custom-simulated-patient\rubrics\psychiatry_intake.json
+2026-04-12 23:07:10 | DEBUG    | src.utils.paths | project_root() -> D:\Year4\Semester 1\Capstone Project\Workspace\custom-simulated-patient
+2026-04-12 23:07:10 | DEBUG    | src.utils.paths | rubrics_dir() -> D:\Year4\Semester 1\Capstone Project\Workspace\custom-simulated-patient\rubrics
+2026-04-12 23:07:10 | DEBUG    | src.utils.paths | default_rubric_path('psychiatry_intake.json') -> D:\Year4\Semester 1\Capstone Project\Workspace\custom-simulated-patient\rubrics\psychiatry_intake.json
+2026-04-12 23:07:11 | INFO     | api.main | Application startup: loading environment and initializing database
+2026-04-12 23:07:11 | INFO     | src.utils.env | Loading environment variables from .env file
+2026-04-12 23:07:11 | DEBUG    | src.utils.env | Environment variables loaded (override=False)
+2026-04-12 23:07:11 | DEBUG    | api.main | Environment variables loaded
+2026-04-12 23:07:11 | INFO     | api.database | Initializing MongoDB database

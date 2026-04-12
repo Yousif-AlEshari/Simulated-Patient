@@ -1,0 +1,32 @@
+2026-04-08 20:36:35 | INFO     | src.utils.env | Loading environment variables from .env file
+2026-04-08 20:36:35 | DEBUG    | src.utils.env | Environment variables loaded (override=False)
+2026-04-08 20:36:36 | DEBUG    | src.utils.paths | project_root() -> D:\Year4\Semester 1\Capstone Project\Workspace\custom-simulated-patient
+2026-04-08 20:36:36 | DEBUG    | src.utils.paths | rubrics_dir() -> D:\Year4\Semester 1\Capstone Project\Workspace\custom-simulated-patient\rubrics
+2026-04-08 20:36:36 | DEBUG    | src.utils.paths | default_rubric_path('psychiatry_intake.json') -> D:\Year4\Semester 1\Capstone Project\Workspace\custom-simulated-patient\rubrics\psychiatry_intake.json
+2026-04-08 20:36:36 | DEBUG    | src.utils.paths | project_root() -> D:\Year4\Semester 1\Capstone Project\Workspace\custom-simulated-patient
+2026-04-08 20:36:36 | DEBUG    | src.utils.paths | rubrics_dir() -> D:\Year4\Semester 1\Capstone Project\Workspace\custom-simulated-patient\rubrics
+2026-04-08 20:36:36 | DEBUG    | src.utils.paths | default_rubric_path('psychiatry_intake.json') -> D:\Year4\Semester 1\Capstone Project\Workspace\custom-simulated-patient\rubrics\psychiatry_intake.json
+2026-04-08 20:36:36 | INFO     | __main__ | Streamlit app starting
+2026-04-08 20:36:37 | DEBUG    | __main__ | Patient simulator initialized
+2026-04-08 20:36:43 | DEBUG    | urllib3.connectionpool | Starting new HTTPS connection (1): api.ipify.org:443
+2026-04-08 20:36:43 | DEBUG    | urllib3.connectionpool | https://api.ipify.org:443 "GET / HTTP/1.1" 200 13
+2026-04-08 20:36:45 | INFO     | src.evaluation.patient.deepeval_patient | DeepEval initialized successfully
+2026-04-08 20:36:45 | DEBUG    | __main__ | Patient evaluator initialized (available=True)
+2026-04-08 20:36:45 | INFO     | src.ui.app_shell | Rendering app shell
+2026-04-08 20:36:45 | DEBUG    | src.state.session_store | Initialized session state: conversation_history = []
+2026-04-08 20:36:45 | DEBUG    | src.state.session_store | Initialized session state: active_condition = ''
+2026-04-08 20:36:45 | DEBUG    | src.state.session_store | Initialized session state: active_language = 'English'
+2026-04-08 20:36:45 | DEBUG    | src.state.session_store | Initialized session state: rubric_path = 'rubrics/psychiatry_intake.json'
+2026-04-08 20:36:45 | DEBUG    | src.state.session_store | Initialized session state: rubric = None
+2026-04-08 20:36:45 | DEBUG    | src.state.session_store | Initialized session state: trainee_grade = None
+2026-04-08 20:36:45 | DEBUG    | src.state.session_store | Initialized session state: trainee_meta = None
+2026-04-08 20:36:45 | DEBUG    | src.state.session_store | Initialized session state: trainee_scored = None
+2026-04-08 20:36:46 | DEBUG    | src.ui.app_shell | Page configured and title set
+2026-04-08 20:36:46 | DEBUG    | src.ui.chat_tab | Rendering chat tab
+2026-04-08 20:36:46 | DEBUG    | src.state.session_store | Retrieved conversation history: 0 messages
+2026-04-08 20:36:46 | DEBUG    | src.state.session_store | Retrieved conversation history: 0 messages
+2026-04-08 20:36:46 | INFO     | src.ui.patient_eval_tab | Rendering patient evaluation tab
+2026-04-08 20:36:46 | DEBUG    | src.state.session_store | Checking conversation readiness: min_turns=2, current_turns=0, ready=False
+2026-04-08 20:36:46 | INFO     | src.ui.trainee_eval_tab | Rendering trainee evaluation tab
+2026-04-08 20:36:46 | DEBUG    | src.state.session_store | Checking conversation readiness: min_turns=2, current_turns=0, ready=False
+2026-04-08 20:36:46 | DEBUG    | src.ui.app_shell | All tabs rendered
