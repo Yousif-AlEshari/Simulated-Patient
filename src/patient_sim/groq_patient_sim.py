@@ -7,18 +7,25 @@ This is a thin wrapper around Groq Chat Completions.
 
 from __future__ import annotations
 
+import json
 import os
+import re
+import time
 from typing import Optional
 
 from groq import Groq
 
 from src.patient_sim.interfaces import Conversation, PatientProfile, PatientSimConfig
+from src.utils.logger import get_logger, log_call
+
+logger = get_logger(__name__)
 
 
 class GroqPatientSimulator:
     def __init__(self, *, api_key: Optional[str] = None) -> None:
         self._client = Groq(api_key=api_key or os.getenv("GROQ_API_KEY"))
 
+    @log_call
     def generate_profile(self, condition: str, language: str) -> PatientProfile:
         """
         Makes a single LLM call to generate a random PatientProfile for a session.
@@ -28,16 +35,15 @@ class GroqPatientSimulator:
         Retries up to 3 times on API errors with exponential backoff.
         Higher temperature (1.5) increases diversity/creativity of profiles.
         """
-        import json
-        import time
-        import re
         from src.patient_sim.prompts import build_profile_generation_prompt
 
+        logger.info(f"Attempting to generate patient profile: condition={condition!r}, language={language!r}")
         system_prompt = build_profile_generation_prompt(condition, language)
         max_retries = 3
 
         for attempt in range(max_retries):
             try:
+                logger.debug(f"Profile generation attempt {attempt + 1}/{max_retries}")
                 resp = self._client.chat.completions.create(
                     model="openai/gpt-oss-20b",
                     messages=[
@@ -54,6 +60,7 @@ class GroqPatientSimulator:
                     max_completion_tokens=1024,
                     stream=False,
                 )
+                logger.debug(f"LLM response received, parsing JSON")
 
                 raw = resp.choices[0].message.content.strip()
 
@@ -71,6 +78,7 @@ class GroqPatientSimulator:
                         raw = match.group(0).strip()
 
                 data = json.loads(raw)
+                logger.info(f"Patient profile generated successfully on attempt {attempt + 1}/{max_retries}")
 
                 return PatientProfile(
                     condition=condition,
@@ -97,31 +105,34 @@ class GroqPatientSimulator:
                 )
 
             except json.JSONDecodeError as e:
-                error_msg = f"JSON parse error on attempt {attempt + 1}/{max_retries}: {e}"
-                print(error_msg)
+                logger.warning(f"JSON parse error on attempt {attempt + 1}/{max_retries}: {e}")
                 if attempt < max_retries - 1:
                     wait_time = 2 ** attempt  # 1s, 2s, 4s
+                    logger.debug(f"Retrying after {wait_time}s")
                     time.sleep(wait_time)
                     continue
 
             except Exception as e:
-                error_msg = (
-                    f"Error generating patient profile on attempt {attempt + 1}/{max_retries}: {e}"
+                logger.warning(
+                    f"Error generating patient profile on attempt {attempt + 1}/{max_retries}: {type(e).__name__}: {e}"
                 )
-                print(error_msg)
                 if attempt < max_retries - 1:
                     wait_time = 2 ** attempt  # 1s, 2s, 4s
+                    logger.debug(f"Retrying after {wait_time}s")
                     time.sleep(wait_time)
                     continue
 
         # All retries exhausted: graceful fallback
-        print(
+        logger.error(
             f"Failed to generate profile for {condition}/{language} after {max_retries} attempts. "
             "Using default profile."
         )
         return PatientProfile(condition=condition, language=language)
 
+    @log_call
     def generate(self, conversation: Conversation, *, config: PatientSimConfig) -> str:
+        logger.info(f"Groq patient generation: model={config.model}, temp={config.temperature}")
+        logger.debug(f"Conversation history: {len(conversation)} messages")
         resp = self._client.chat.completions.create(
             model=config.model,
             messages=conversation,
@@ -133,4 +144,6 @@ class GroqPatientSimulator:
             stream=False,
             stop=None,
         )
-        return resp.choices[0].message.content
+        result = resp.choices[0].message.content
+        logger.debug(f"Generated response length: {len(result)} chars")
+        return result

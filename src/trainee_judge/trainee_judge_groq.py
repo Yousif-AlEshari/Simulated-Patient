@@ -24,6 +24,10 @@ from typing import Any, Dict, List, Optional, Tuple
 from dotenv import load_dotenv
 from groq import Groq
 
+from src.utils.logger import get_logger, log_call
+
+logger = get_logger(__name__)
+
 from .trainee_judge_schema import (
     load_rubric,
     build_response_format,
@@ -458,6 +462,7 @@ Return ONLY a JSON array of 3-4 string bullets, e.g.:
 # ----------------------------
 # Calling Groq
 # ----------------------------
+@log_call
 def judge_trainee_with_groq(
     conversation_history: List[Dict[str, str]],
     language: str,
@@ -480,11 +485,17 @@ def judge_trainee_with_groq(
     - All calls run concurrently via asyncio
     - Results assembled back into standard grade_json format
     """
+    logger.info(f"Judge start: condition={condition!r}, language={language!r}, rubric_path={rubric_path}")
+    
     rb = rubric or load_rubric(rubric_path)  # rubric_path can be None if rubric dict provided
+    logger.debug(f"Rubric loaded: {len(rb.get('items', []))} items")
+    
     turns = build_numbered_turns(conversation_history)
+    logger.debug(f"Built {len(turns)} conversation turns")
     
     # Build full conversation text once (shared by all item judgments)
     full_conversation = json.dumps(turns, ensure_ascii=False)
+    logger.debug(f"Conversation JSON payload: {len(full_conversation)} bytes")
     
     # Track start time for total duration
     import time
@@ -497,6 +508,7 @@ def judge_trainee_with_groq(
         asyncio.set_event_loop(loop)
         
         # Convert turns to dict format for async function
+        logger.debug("Starting parallel item judgment coroutine")
         item_results = loop.run_until_complete(
             _judge_all_items_async(
                 rb.get("items", []),
@@ -506,11 +518,12 @@ def judge_trainee_with_groq(
                 config,
             )
         )
+        logger.info(f"Parallel judgment completed: {len(item_results)} items scored")
         
         loop.close()
         
     except Exception as e:
-        logging.error(f"Parallel item judgment failed: {e}")
+        logger.error(f"Parallel item judgment failed: {type(e).__name__}: {e}", exc_info=True)
         # Graceful fallback: return all items with score 0
         item_results = {
             item["id"]: {"item_score": 0, "rationale": f"Error during judgment: {str(e)[:100]}"}
@@ -528,9 +541,11 @@ def judge_trainee_with_groq(
     ]
     
     try:
+        logger.debug("Generating summary feedback")
         feedback = _generate_summary_feedback_sync(scored_items, rb.get("rubric_id", ""), language, config)
+        logger.info(f"Generated {len(feedback)} feedback items")
     except Exception as e:
-        logging.error(f"Feedback generation failed: {e}")
+        logger.warning(f"Feedback generation failed: {type(e).__name__}: {e}")
         feedback = ["Evaluation complete."]
     
     # Assemble final grade_json in the expected format
@@ -585,4 +600,4 @@ if __name__ == "__main__":
         condition="depression",
         rubric_path="rubrics/psychiatry_intake.json",
     )
-    print(json.dumps({"meta": meta, "grade": grade}, ensure_ascii=False, indent=2))
+    logger.debug(f"Demo judgment output: {json.dumps({'meta': meta, 'grade': grade}, ensure_ascii=False, indent=2)}")

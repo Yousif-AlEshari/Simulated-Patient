@@ -17,6 +17,10 @@ from datetime import datetime, timedelta, timezone
 from pymongo import MongoClient, ASCENDING
 from pymongo.collection import Collection
 
+from src.utils.logger import get_logger
+
+logger = get_logger(__name__)
+
 # ---------------------------------------------------------------------------
 # Connection
 # ---------------------------------------------------------------------------
@@ -56,11 +60,13 @@ def _evaluations() -> Collection:
 
 def init_db():
     """Create indexes so lookups by session_id are fast."""
+    logger.info("Initializing MongoDB database")
     _sessions().create_index([("session_id", ASCENDING)], unique=True, background=True)
     _messages().create_index([("session_id", ASCENDING)], background=True)
     _messages().create_index([("created_at", ASCENDING)], background=True)
     _evaluations().create_index([("session_id", ASCENDING)], background=True)
     _evaluations().create_index([("created_at", ASCENDING)], background=True)
+    logger.debug("Database indexes created successfully")
 
 
 # ---------------------------------------------------------------------------
@@ -69,6 +75,7 @@ def init_db():
 
 def save_session(session_id: str, condition: str, language: str, profile_json: str = None):
     """Insert a new session document with a 10-minute expiry."""
+    logger.info(f"Saving session: session_id={session_id!r}, condition={condition!r}, language={language!r}")
     now = datetime.now(timezone.utc)
     expires_at = now + timedelta(minutes=10)
     doc = {
@@ -80,11 +87,17 @@ def save_session(session_id: str, condition: str, language: str, profile_json: s
         "profile": profile_json,  # raw JSON string or None
     }
     _sessions().insert_one(doc)
+    logger.debug(f"Session saved, expires at {expires_at.isoformat()}")
 
 
 def get_session_info(session_id: str) -> dict | None:
     """Return the session document as a plain dict, or None."""
+    logger.debug(f"Fetching session info: {session_id!r}")
     doc = _sessions().find_one({"session_id": session_id}, {"_id": 0})
+    if doc:
+        logger.debug(f"Session found: expires_at check for {session_id!r}")
+    else:
+        logger.warning(f"Session not found: {session_id!r}")
     return doc  # already a dict; expires_at is a datetime object
 
 

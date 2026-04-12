@@ -28,6 +28,9 @@ from src.state.session_keys import (
 )
 from src.state.session_store import conversation_ready, get_history
 from src.trainee_judge.trainee_judge_groq import GroqJudgeConfig
+from src.utils.logger import get_logger
+
+logger = get_logger(__name__)
 
 
 def _safe_float(x: Any, default: float = 0.0) -> float:
@@ -38,10 +41,13 @@ def _safe_float(x: Any, default: float = 0.0) -> float:
 
 
 def render_trainee_eval_tab(*, trainee_pipeline: Any, legacy_regex_evaluator: Optional[Any] = None) -> None:
+    logger.info("Rendering trainee evaluation tab")
+    
     st.subheader("Trainee evaluation (LLM judge + deterministic scorer)")
     st.caption("Evaluates the trainee using the full conversation + an examiner-editable rubric JSON.")
 
     if not os.getenv("GROQ_API_KEY"):
+        logger.warning("GROQ_API_KEY missing in trainee evaluation tab")
         st.warning("GROQ_API_KEY is missing. Add it to your environment or .env file to enable trainee judging.")
         return
 

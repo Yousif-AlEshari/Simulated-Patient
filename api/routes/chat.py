@@ -15,6 +15,10 @@ from datetime import datetime
 
 from fastapi import APIRouter, Depends, HTTPException, status
 
+from src.utils.logger import get_logger
+
+logger = get_logger(__name__)
+
 from api.dependencies import get_patient_simulator
 from api.models import (
     ChatMessageRequest,
@@ -61,7 +65,10 @@ def start_session(
 
     Returns a `session_id` that must be passed to all subsequent endpoints.
     """
+    logger.info(f"Starting new session: condition={body.condition!r}, language={body.language!r}")
+    
     if not body.condition.strip():
+        logger.warning("Invalid condition (empty string)")
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail="condition must not be empty.",
@@ -70,6 +77,8 @@ def start_session(
     import uuid
     session_id = str(uuid.uuid4())
     language = body.language if body.language in ("English", "Arabic") else "English"
+    
+    logger.debug(f"Generated session_id={session_id}")
     
     # Generate a random patient profile for this session
     try:
@@ -82,14 +91,17 @@ def start_session(
         profile_dict.pop("language", None)
         profile_json = _json.dumps(profile_dict)
         system_prompt_text = build_system_prompt_from_profile(profile)
-    except Exception:
+        logger.info(f"Patient profile generated successfully for {session_id}")
+    except Exception as e:
         # Fallback: use the old static system prompt if profile generation fails
+        logger.warning(f"Profile generation failed, using fallback: {type(e).__name__}: {e}")
         profile_json = None
         system_prompt_text = build_system_prompt(body.condition.strip(), language)
     
     # Save session and initial system prompt
     save_session(session_id, body.condition.strip(), language, profile_json=profile_json)
     add_message(session_id, "system", system_prompt_text)
+    logger.info(f"Session started: {session_id}")
 
     # fetch the record to obtain expires_at value
     info = get_session_info(session_id) or {}

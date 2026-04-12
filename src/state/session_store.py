@@ -12,6 +12,7 @@ from typing import Dict, List
 
 import streamlit as st
 
+from src.utils.logger import get_logger
 from src.state.session_keys import (
     ACTIVE_CONDITION,
     ACTIVE_LANGUAGE,
@@ -22,6 +23,8 @@ from src.state.session_keys import (
     TRAINEE_META,
     TRAINEE_SCORED,
 )
+
+logger = get_logger(__name__)
 
 
 def ensure_initialized(*, default_language: str = "English") -> None:
@@ -45,6 +48,7 @@ def ensure_initialized(*, default_language: str = "English") -> None:
 
 def clear_all(*, default_language: str = "English") -> None:
     """Clear conversation and evaluation outputs."""
+    logger.warning("Clearing all session state (conversation history and evaluation results)")
     st.session_state[CONVERSATION_HISTORY] = []
     st.session_state[ACTIVE_CONDITION] = ""
     st.session_state[ACTIVE_LANGUAGE] = default_language
@@ -78,3 +82,4 @@ def append_message(role: str, content: str) -> None:
     history = st.session_state.get(CONVERSATION_HISTORY) or []
     history.append({"role": role, "content": content})
     st.session_state[CONVERSATION_HISTORY] = history
+    logger.debug(f"Message appended: role='{role}', length={len(content)} chars")

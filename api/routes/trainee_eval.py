@@ -12,6 +12,10 @@ from typing import Annotated, Optional
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 
+from src.utils.logger import get_logger
+
+logger = get_logger(__name__)
+
 from api.dependencies import get_trainee_pipeline
 from api.models import RubricResponse, TraineeEvalRequest, TraineeEvalResponse
 from api.database import get_session_info, get_session_history, save_evaluation, get_session_profile
@@ -37,7 +41,10 @@ def evaluate_trainee(
     Requires at least one trainee message and one patient reply in the session.
     Requires `GROQ_API_KEY` to be configured.
     """
+    logger.info(f"Trainee evaluation triggered: session_id={body.session_id!r}")
+    
     if not os.getenv("GROQ_API_KEY"):
+        logger.error("GROQ_API_KEY not configured")
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             detail="GROQ_API_KEY is not configured on the server.",
@@ -45,6 +52,7 @@ def evaluate_trainee(
 
     session = get_session_info(body.session_id)
     if session is None:
+        logger.warning(f"Session not found: {body.session_id!r}")
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Session '{body.session_id}' not found in database.",
@@ -52,6 +60,7 @@ def evaluate_trainee(
 
     history = get_session_history(body.session_id)
     if not _is_conversation_ready(history):
+        logger.warning(f"Conversation not ready for evaluation: {body.session_id!r}")
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail="Not enough conversation turns. Send at least one message and receive one reply first.",
@@ -66,11 +75,13 @@ def evaluate_trainee(
         max_completion_tokens=body.max_completion_tokens,
         strict_schema=body.strict_schema,
     )
+    logger.debug(f"Judge config: model={judge_config.model}, temp={judge_config.temperature}")
 
     # Get patient profile for risk gate detection
     profile = get_session_profile(body.session_id)
 
     try:
+        logger.debug(f"Running trainee evaluation pipeline for {body.session_id!r}")
         result = pipeline.run(
             history,
             language=session["language"],
@@ -81,8 +92,10 @@ def evaluate_trainee(
         )
         # Save evaluation result to DB
         save_evaluation(body.session_id, "trainee", result.scored)
+        logger.info(f"Trainee evaluation completed: {body.session_id!r}")
         
     except Exception as exc:
+        logger.error(f"Trainee evaluation failed: {type(exc).__name__}: {exc}", exc_info=True)
         raise HTTPException(
             status_code=status.HTTP_502_BAD_GATEWAY,
             detail=f"Trainee evaluation failed: {exc}",

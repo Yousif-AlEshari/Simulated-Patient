@@ -14,19 +14,29 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Optional
 
+from src.utils.logger import get_logger
+
+logger = get_logger(__name__)
+
 
 def project_root() -> Path:
     """Return the repository root folder (the parent of `src/`)."""
     # .../src/utils/paths.py -> parents: [utils, src, <root>]
-    return Path(__file__).resolve().parents[2]
+    root = Path(__file__).resolve().parents[2]
+    logger.debug(f"project_root() -> {root}")
+    return root
 
 
 def rubrics_dir() -> Path:
-    return project_root() / "rubrics"
+    rubrics = project_root() / "rubrics"
+    logger.debug(f"rubrics_dir() -> {rubrics}")
+    return rubrics
 
 
 def default_rubric_path(filename: str = "psychiatry_intake.json") -> Path:
-    return rubrics_dir() / filename
+    path = rubrics_dir() / filename
+    logger.debug(f"default_rubric_path({filename!r}) -> {path}")
+    return path
 
 
 def resolve_rubric_path(rubric_path: Optional[str] = None) -> Path:
@@ -37,10 +47,15 @@ def resolve_rubric_path(rubric_path: Optional[str] = None) -> Path:
     - If absolute: use it as-is.
     """
     if not rubric_path:
-        return default_rubric_path()
+        resolved = default_rubric_path()
+        logger.debug(f"resolve_rubric_path(None) -> {resolved} (default)")
+        return resolved
 
     p = Path(rubric_path)
     if p.is_absolute():
+        logger.debug(f"resolve_rubric_path({rubric_path!r}) -> {p} (absolute)")
         return p
 
-    return project_root() / p
+    resolved = project_root() / p
+    logger.debug(f"resolve_rubric_path({rubric_path!r}) -> {resolved} (relative)")
+    return resolved

@@ -19,6 +19,9 @@ from pathlib import Path
 from typing import Any, Dict, List
 from dotenv import load_dotenv
 from src.utils.paths import default_rubric_path
+from src.utils.logger import get_logger
+
+logger = get_logger(__name__)
 
 DEFAULT_RUBRIC_PATH = default_rubric_path()
 load_dotenv()
@@ -27,15 +30,20 @@ def load_rubric(rubric_path: str | Path = DEFAULT_RUBRIC_PATH) -> Dict[str, Any]
     """Load rubric JSON from disk."""
     path = Path(rubric_path)
     if not path.exists():
+        logger.error(f"Rubric not found: {path}")
         raise FileNotFoundError(f"Rubric not found: {path}")
     with path.open("r", encoding="utf-8") as f:
-        return json.load(f)
+        rubric = json.load(f)
+    logger.debug(f"Rubric loaded from {path}: {rubric.get('rubric_id', 'unknown')} v{rubric.get('version', 'unknown')}")
+    return rubric
 
 
 def rubric_fingerprint(rubric: Dict[str, Any]) -> str:
     """Deterministic SHA-256 hash of the rubric JSON (useful for audit logs)."""
     canonical = json.dumps(rubric, ensure_ascii=False, sort_keys=True).encode("utf-8")
-    return hashlib.sha256(canonical).hexdigest()
+    fingerprint = hashlib.sha256(canonical).hexdigest()
+    logger.debug(f"Rubric fingerprint: {fingerprint[:16]}...")
+    return fingerprint
 
 
 def _item_ids(rubric: Dict[str, Any]) -> List[str]:
@@ -141,7 +149,7 @@ def build_response_format(
 
 if __name__ == "__main__":
     rb = load_rubric(DEFAULT_RUBRIC_PATH)
-    print("rubric_id:", rb.get("rubric_id"))
-    print("rubric_version:", rb.get("version"))
-    print("rubric_fingerprint:", rubric_fingerprint(rb))
-    print(json.dumps(build_judge_output_schema(rb), ensure_ascii=False, indent=2))
+    logger.info(f"rubric_id: {rb.get('rubric_id')}")
+    logger.info(f"rubric_version: {rb.get('version')}")
+    logger.info(f"rubric_fingerprint: {rubric_fingerprint(rb)}")
+    logger.debug(f"Judge output schema: {json.dumps(build_judge_output_schema(rb), ensure_ascii=False, indent=2)}")

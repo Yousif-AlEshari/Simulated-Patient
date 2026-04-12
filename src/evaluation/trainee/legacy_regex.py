@@ -15,6 +15,9 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 from src.utils.paths import resolve_rubric_path
+from src.utils.logger import get_logger, log_call
+
+logger = get_logger(__name__)
 
 
 # ----------------------------
@@ -115,6 +118,7 @@ def patient_risk_positive(patient_msgs: List[str], rubric: Dict[str, Any], langu
 # Main evaluator
 # ----------------------------
 
+@log_call
 def evaluate_trainee(
     conversation_history: List[Dict[str, str]],
     condition: str,
@@ -123,15 +127,19 @@ def evaluate_trainee(
     rubric_path: Optional[str] = None,
 ) -> Dict[str, Any]:
     """Evaluate trainee messages using the rubric patterns (no LLM judge)."""
+    logger.info(f"Legacy regex evaluation: condition={condition!r}, language={language!r}")
 
     if rubric is None:
         p = resolve_rubric_path(rubric_path)
         rubric = load_rubric(p)
+        logger.debug(f"Loaded rubric from {p}: {rubric.get('rubric_id', 'unknown')}")
 
     trainee_msgs = [m.get("content", "") for m in conversation_history if m.get("role") == "user"]
     patient_msgs = [m.get("content", "") for m in conversation_history if m.get("role") == "assistant"]
+    logger.debug(f"Extracted {len(trainee_msgs)} trainee messages and {len(patient_msgs)} patient messages")
 
     risk_positive = patient_risk_positive(patient_msgs, rubric, language)
+    logger.info(f"Patient risk status: risk_positive={risk_positive}")
 
     checklist_results = []
     total = 0.0
@@ -143,12 +151,18 @@ def evaluate_trainee(
         total_possible += weight
 
         if item.get("gate") == "patient_risk_positive" and not risk_positive:
+            logger.debug(f"Skipping gated item {item.get('id')} (patient_risk_positive gate, not active)")
             total_possible -= weight
             continue
 
         patterns = _patterns_for_language(item, language)
         ev = find_evidence(patterns, trainee_msgs)
         score = weight if ev else 0.0
+        
+        if ev:
+            logger.debug(f"Item {item.get('id')!r}: MATCHED, score={score}")
+        else:
+            logger.debug(f"Item {item.get('id')!r}: NOT matched, score={score}")
 
         checklist_results.append(
             {
@@ -162,6 +176,7 @@ def evaluate_trainee(
         total += score
 
         if item.get("safety_critical") and risk_positive and not ev:
+            logger.warning(f"Safety critical item {item.get('id')} not matched despite patient risk")
             flags.append(
                 {
                     "type": "SAFETY_CRITICAL",
@@ -184,7 +199,10 @@ def evaluate_trainee(
     judgment = 1 + (judg_max - 1) * pct
     if any(f["type"] == "SAFETY_CRITICAL" for f in flags):
         judgment = min(judgment, 2)
+        logger.warning("Safety critical flag present, capping judgment score")
     judgment = min(judg_max, max(1, round(judgment)))
+
+    logger.info(f"Scores calculated: total={total}, total_possible={total_possible}, percent={round(pct, 3)}, communication={communication}, judgment={judgment}")
 
     pass_cfg = rubric.get("pass_criteria") or {}
     min_percent = float(pass_cfg.get("min_percent", 0.7))
@@ -192,6 +210,7 @@ def evaluate_trainee(
 
     has_fail_flag = any(f.get("type") in fail_on_flags for f in flags)
     passed = (pct >= min_percent) and not has_fail_flag
+    logger.info(f"Pass/fail determination: passed={passed}, percent_pass={pct >= min_percent}, fail_flag={has_fail_flag}")
 
     feedback = []
     if empathy and empathy["score"] == 0:
@@ -202,6 +221,9 @@ def evaluate_trainee(
         )
     if summary and summary["score"] == 0:
         feedback.append("End with a short summary and clear next steps.")
+
+    if feedback:
+        logger.info(f"Generated {len(feedback)} feedback items")
 
     return {
         "condition": condition,

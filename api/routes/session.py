@@ -14,6 +14,10 @@ from typing import Annotated
 
 from fastapi import APIRouter, HTTPException, status
 
+from src.utils.logger import get_logger
+
+logger = get_logger(__name__)
+
 from api.models import SessionTimeResponse, SessionResultsResponse
 from api.database import (
     get_session_info,
@@ -29,10 +33,16 @@ router = APIRouter(prefix="/session", tags=["Session"])
 @router.get("/{session_id}/time", response_model=SessionTimeResponse)
 def get_session_time(session_id: str) -> SessionTimeResponse:
     """Return how many seconds remain before the 10‑minute timer expires."""
+    
     info = get_session_info(session_id)
     if info is None:
+        logger.warning(f"Session not found for timer query: {session_id!r}")
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Session not found.")
+    
     remaining = time_left_seconds(session_id)
+    if remaining < 60:
+        logger.warning(f"Session nearing expiry: {session_id!r}, remaining={remaining:.1f}s")
+    
     return SessionTimeResponse(
         session_id=session_id,
         remaining_seconds=remaining,

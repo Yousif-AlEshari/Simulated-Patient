@@ -31,8 +31,9 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 from dotenv import load_dotenv
 from src.utils.paths import default_rubric_path
+from src.utils.logger import get_logger, log_call
 
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__)
 
 # Optional: reuse the same default rubric path convention as other files.
 DEFAULT_RUBRIC_PATH = default_rubric_path()
@@ -171,6 +172,7 @@ def _ensure_grade_has_all_items(
     return grade
 
 
+@log_call
 def score_from_judge_output(
     conversation_history: List[Dict[str, str]],
     rubric: Dict[str, Any],
@@ -185,9 +187,12 @@ def score_from_judge_output(
 
     Returns a dict ready to display in Streamlit.
     """
+    logger.info(f"Scoring judge output: rubric={rubric.get('rubric_id', 'unknown')}, language={language!r}")
+    
     item_index = _index_rubric_items(rubric)
     item_ids = list(item_index.keys())
     judge_grade = _ensure_grade_has_all_items(judge_grade, item_ids)
+    logger.debug(f"Processing {len(item_ids)} rubric items")
 
     pass_cfg = rubric.get("pass_criteria") or {}
     min_percent = float(pass_cfg.get("min_percent", 0.7))
@@ -229,6 +234,11 @@ def score_from_judge_output(
         rationale = str(jr.get("rationale", "") or "")
 
         included = bool(gate_active)
+        
+        if included:
+            logger.debug(f"Item {item_id}: score={item_score}, included=true, weight={weight}")
+        else:
+            logger.debug(f"Item {item_id}: skipped (gate inactive)")
 
         if included:
             total_possible += weight
@@ -243,6 +253,7 @@ def score_from_judge_output(
 
         # Deterministic safety flag (regardless of what the judge returned)
         if included and bool(it.get("safety_critical", False)) and not achieved:
+            logger.warning(f"Safety-critical item '{item_id}' not achieved while applicable")
             flags.append(
                 {
                     "type": "SAFETY_CRITICAL",
@@ -310,4 +321,4 @@ if __name__ == "__main__":
         "summary_feedback": [],
     }
     out = score_from_judge_output(demo_convo, rb, "English", demo_grade)
-    print(json.dumps(out, ensure_ascii=False, indent=2))
+    logger.debug(f"Demo score output: {json.dumps(out, ensure_ascii=False, indent=2)}")

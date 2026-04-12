@@ -15,13 +15,20 @@ from src.state.session_store import ensure_initialized
 from src.ui.chat_tab import render_chat_tab
 from src.ui.patient_eval_tab import render_patient_eval_tab
 from src.ui.trainee_eval_tab import render_trainee_eval_tab
+from src.utils.logger import get_logger
+
+logger = get_logger(__name__)
 
 
 def render_app(*, patient_simulator: Any, patient_evaluator: Any, trainee_pipeline: Any, legacy_regex_evaluator: Optional[Any] = None) -> None:
+    logger.info("Rendering app shell")
+    
     ensure_initialized()
 
     st.set_page_config(page_title="Simulated Patient Chatbot", layout="wide")
     st.title("Simulated Patient Chatbot")
+
+    logger.debug("Page configured and title set")
 
     tab_chat, tab_patient_eval, tab_trainee_eval = st.tabs(["Chat", "Evaluate Patient", "Evaluate Trainee"])
 
@@ -33,3 +40,5 @@ def render_app(*, patient_simulator: Any, patient_evaluator: Any, trainee_pipeli
 
     with tab_trainee_eval:
         render_trainee_eval_tab(trainee_pipeline=trainee_pipeline, legacy_regex_evaluator=legacy_regex_evaluator)
+    
+    logger.debug("All tabs rendered")

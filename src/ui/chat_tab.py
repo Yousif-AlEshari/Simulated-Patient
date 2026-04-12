@@ -14,6 +14,9 @@ from src.patient_sim.interfaces import PatientSimConfig
 from src.patient_sim.prompts import build_system_prompt, build_system_prompt_from_profile
 from src.state.session_keys import ACTIVE_CONDITION, ACTIVE_LANGUAGE, CONVERSATION_HISTORY
 from src.state.session_store import append_message, clear_all, get_history, set_conversation
+from src.utils.logger import get_logger
+
+logger = get_logger(__name__)
 
 
 def _init_history(
@@ -29,6 +32,8 @@ def _init_history(
 
 
 def render_chat_tab(*, patient_simulator: Any) -> None:
+    logger.debug("Rendering chat tab")
+    
     condition = st.text_input("Enter the patient's condition (Ex: depression, anxiety):").strip()
     language = st.selectbox("Select the language for responses:", ["English", "Arabic"], index=0)
 
@@ -38,11 +43,14 @@ def render_chat_tab(*, patient_simulator: Any) -> None:
             if not condition:
                 st.warning("Please enter a condition first.")
             else:
+                logger.info(f"Starting conversation: condition={condition!r}, language={language!r}")
                 with st.spinner("Generating patient profile..."):
                     try:
                         profile = patient_simulator.generate_profile(condition, language)
                         st.session_state["patient_profile"] = profile
-                    except Exception:
+                        logger.info(f"Profile generated successfully for {condition}")
+                    except Exception as e:
+                        logger.warning(f"Profile generation failed: {type(e).__name__}: {e}")
                         profile = None
                         st.session_state["patient_profile"] = None
                 set_conversation(
@@ -53,6 +61,7 @@ def render_chat_tab(*, patient_simulator: Any) -> None:
 
     with col2:
         if st.button("Clear everything"):
+            logger.info("Clearing entire session")
             clear_all(default_language="English")
             st.rerun()
 
@@ -61,10 +70,12 @@ def render_chat_tab(*, patient_simulator: Any) -> None:
     # Auto-init once user provides a condition.
     history = get_history()
     if condition and not history:
+        logger.debug(f"Auto-initializing conversation for {condition}")
         try:
             profile = patient_simulator.generate_profile(condition, language)
             st.session_state["patient_profile"] = profile
-        except Exception:
+        except Exception as e:
+            logger.warning(f"Auto-init profile generation failed: {type(e).__name__}: {e}")
             profile = None
             st.session_state["patient_profile"] = None
         set_conversation(_init_history(condition, language, profile=st.session_state.get("patient_profile")), condition=condition, language=language)
@@ -84,14 +95,19 @@ def render_chat_tab(*, patient_simulator: Any) -> None:
             st.warning("Click Start / Reset conversation first.")
         else:
             if not os.getenv("GROQ_API_KEY"):
+                logger.error("GROQ_API_KEY is missing")
                 st.error("GROQ_API_KEY is missing. Add it to your environment or .env file.")
             else:
+                logger.debug("User message received, appending to history")
                 append_message("user", user_message)
                 try:
                     cfg = PatientSimConfig()
+                    logger.debug(f"Generating patient response for {len(get_history())} turn conversation")
                     assistant_response = patient_simulator.generate(get_history(), config=cfg)
                     append_message("assistant", assistant_response)
+                    logger.info("Patient response generated successfully")
                 except Exception as e:
+                    logger.error(f"LLM call failed: {type(e).__name__}: {e}", exc_info=True)
                     st.error(f"LLM call failed: {e}")
 
     with chat_box:

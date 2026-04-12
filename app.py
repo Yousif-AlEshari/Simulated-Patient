@@ -17,8 +17,11 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from src.utils.env import load_env
+from src.utils.logger import get_logger
 
 load_env()
+
+logger = get_logger(__name__)
 
 from src.patient_sim.groq_patient_sim import GroqPatientSimulator
 from src.evaluation.patient.deepeval_patient import DeepEvalPatientEvaluator
@@ -31,8 +34,13 @@ from src.ui.app_shell import render_app
 
 
 def main() -> None:
+    logger.info("Streamlit app starting")
+    
     patient_simulator = GroqPatientSimulator()
+    logger.debug("Patient simulator initialized")
+    
     patient_evaluator = DeepEvalPatientEvaluator()
+    logger.debug(f"Patient evaluator initialized (available={patient_evaluator.available})")
 
     trainee_pipeline = TraineeEvalPipeline(
         rubric_loader=load_examiner_rubric,

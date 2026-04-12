@@ -14,16 +14,19 @@ from typing import Any, Dict, List
 
 from src.evaluation.patient.interfaces import Conversation, PatientEvalConfig
 from src.patient_sim.prompts import build_chatbot_role
+from src.utils.logger import get_logger
 
-#s
+logger = get_logger(__name__)
 class DeepEvalPatientEvaluator:
     def __init__(self) -> None:
         self.available = True
         try:
             from deepeval.test_case import Turn, ConversationalTestCase  # noqa: F401
             from deepeval.metrics import RoleAdherenceMetric, ConversationalGEval  # noqa: F401
-        except Exception:
+            logger.info("DeepEval initialized successfully")
+        except Exception as e:
             self.available = False
+            logger.warning(f"DeepEval not available: {type(e).__name__}: {e}")
 
     def _history_to_turns(self, conversation: Conversation):
         from deepeval.test_case import Turn
@@ -42,15 +45,20 @@ class DeepEvalPatientEvaluator:
         language: str,
         config: PatientEvalConfig,
     ) -> Dict[str, Any]:
+        logger.info(f"Patient evaluation start: condition={condition!r}, language={language!r}")
+        
         if not self.available:
+            logger.error("DeepEval is not available; cannot evaluate patient")
             raise RuntimeError("DeepEval is not available. Install with: pip install -U deepeval")
         if not os.getenv("OPENAI_API_KEY"):
+            logger.error("OPENAI_API_KEY is missing; DeepEval judges require it")
             raise RuntimeError("OPENAI_API_KEY is missing; DeepEval judges require it.")
 
         from deepeval.test_case import ConversationalTestCase
         from deepeval.metrics import RoleAdherenceMetric, ConversationalGEval
 
         turns = self._history_to_turns(conversation)
+        logger.debug(f"Converted conversation to {len(turns)} turns")
 
         context_list = [
             f"Condition: {condition or 'N/A'}",
@@ -81,18 +89,22 @@ class DeepEvalPatientEvaluator:
 
         results = []
         for metric in (role_metric, sim_metric):
+            logger.debug(f"Running metric: {metric.__class__.__name__}")
             metric.measure(test_case)
+            score = getattr(metric, "score", None)
+            logger.info(f"Metric {metric.__class__.__name__}: score={score}")
             results.append(
                 {
                     "name": getattr(metric, "name", metric.__class__.__name__),
                     "class": metric.__class__.__name__,
-                    "score": getattr(metric, "score", None),
+                    "score": score,
                     "threshold": getattr(metric, "threshold", None),
                     "passed": metric.is_successful(),
                     "reason": getattr(metric, "reason", ""),
                 }
             )
 
+        logger.info(f"Patient evaluation finished: {len(results)} metrics evaluated")
         return {
             "condition": condition,
             "language": language,

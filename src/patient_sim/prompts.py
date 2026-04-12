@@ -15,8 +15,12 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+from src.utils.logger import get_logger
+
 if TYPE_CHECKING:
     from src.patient_sim.interfaces import PatientProfile
+
+logger = get_logger(__name__)
 
 
 # ---------------------------------------------------------------------------
@@ -29,6 +33,7 @@ def build_system_prompt(condition: str, language: str) -> str:
     Kept for backward compatibility and fallback when profile generation fails.
     Prefer build_system_prompt_from_profile() for new sessions.
     """
+    logger.debug(f"build_system_prompt: condition={condition!r}, language={language!r}")
     return (
         "You are a patient in a psychology clinic.\n"
         f"You suffer from: {condition}.\n\n"
@@ -117,6 +122,11 @@ def build_system_prompt_from_profile(profile: "PatientProfile") -> str:
     Called once when a session is created; the result is stored as role=system
     in the conversation history and reused for the entire session.
     """
+    logger.debug(
+        f"build_system_prompt_from_profile: condition={profile.condition!r}, "
+        f"age={profile.age}, gender={profile.gender!r}, response_style={profile.response_style!r}, "
+        f"emotional_tone={profile.emotional_tone!r}, risk_positive={profile.risk_positive}"
+    )
 
     # ── Risk block ────────────────────────────────────────────────────────────
     if profile.risk_positive:

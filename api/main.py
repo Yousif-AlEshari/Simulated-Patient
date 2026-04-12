@@ -17,17 +17,25 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 
 from src.utils.env import load_env
+from src.utils.logger import get_logger
 from api.database import init_db
 from api.postgres import engine, Base
 import api.db_models  # Import to register models
 
+logger = get_logger(__name__)
+
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     """Load environment variables and initialize DB once at startup."""
+    logger.info("Application startup: loading environment and initializing database")
     load_env()
+    logger.debug("Environment variables loaded")
     init_db()
+    logger.debug("Database initialized")
     Base.metadata.create_all(bind=engine)
+    logger.info("Application startup complete")
     yield
+    logger.info("Application shutdown")
 
 
 app = FastAPI(
