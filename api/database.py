@@ -30,6 +30,8 @@ _DB_NAME = "simulated_patient"
 
 _client: MongoClient | None = None
 
+_SESSION_TIME = 15
+
 
 def _get_client() -> MongoClient:
     global _client
@@ -74,10 +76,10 @@ def init_db():
 # ---------------------------------------------------------------------------
 
 def save_session(session_id: str, condition: str, language: str, profile_json: str = None):
-    """Insert a new session document with a 10-minute expiry."""
+    """Insert a new session document with a timed minute expiry."""
     logger.info(f"Saving session: session_id={session_id!r}, condition={condition!r}, language={language!r}")
     now = datetime.now(timezone.utc)
-    expires_at = now + timedelta(minutes=10)
+    expires_at = now + timedelta(minutes=_SESSION_TIME)
     doc = {
         "session_id": session_id,
         "condition": condition,
